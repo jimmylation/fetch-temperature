@@ -4,8 +4,13 @@ from bs4 import BeautifulSoup
 # URL till sidan
 url = "https://www.piteenergi.se/snotemperatur/"
 
-# Hämta sidans innehåll
-response = requests.get(url)
+# Lägg till en User-Agent i headers
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+}
+
+# Hämta sidans innehåll med headers
+response = requests.get(url, headers=headers)
 
 if response.status_code == 200:
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -30,6 +35,12 @@ if response.status_code == 200:
         print(f"Snötemperatur: {snow_temp}")
         print(f"Lufttemperatur: {air_temp}")
         print(f"Senast uppdaterad: {update_time}")
+        
+        # Spara resultatet i en fil (valfritt)
+        with open("output.txt", "w") as file:
+            file.write(f"Snötemperatur: {snow_temp}\n")
+            file.write(f"Lufttemperatur: {air_temp}\n")
+            file.write(f"Senast uppdaterad: {update_time}\n")
     else:
         print("Kunde inte hitta 'm-snow-card'-elementet med det angivna data-id.")
 else:
