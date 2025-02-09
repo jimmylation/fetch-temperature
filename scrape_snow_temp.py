@@ -30,12 +30,6 @@ if response.status_code == 200:
         print(f"Snötemperatur: {snow_temp}")
         print(f"Lufttemperatur: {air_temp}")
         print(f"Senast uppdaterad: {update_time}")
-        
-        # Spara resultatet i en fil (valfritt)
-        with open("output.txt", "w") as file:
-            file.write(f"Snötemperatur: {snow_temp}\n")
-            file.write(f"Lufttemperatur: {air_temp}\n")
-            file.write(f"Senast uppdaterad: {update_time}\n")
     else:
         print("Kunde inte hitta 'm-snow-card'-elementet med det angivna data-id.")
 else:
