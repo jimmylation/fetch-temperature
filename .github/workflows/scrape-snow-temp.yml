@@ -1,0 +1,38 @@
+name: Scrape Snow Temperature
+
+# Kör arbetsflödet enligt ett schema (varje dag kl. 08:00 UTC)
+on:
+  schedule:
+    - cron: '0 8 * * *'  # Syntax för cron: https://crontab.guru/
+  workflow_dispatch:  # Tillåter manuell körning från GitHub Actions-gränssnittet
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest  # Kör på en Ubuntu-baserad maskin
+
+    steps:
+      # Steg 1: Checka ut koden från ditt repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Steg 2: Konfigurera Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'  # Ange den Python-version du vill använda
+
+      # Steg 3: Installera beroenden
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4
+
+      # Steg 4: Kör ditt Python-skript
+      - name: Run Python script
+        run: |
+          python scrape_snow_temp.py  # Ersätt med namnet på ditt Python-skript
+
+      # Steg 5 (valfritt): Spara eller publicera resultatet
+      - name: Save output
+        run: |
+          echo "Snötemperatur: $(cat output.txt)"  # Exempel: Spara resultatet i en fil
