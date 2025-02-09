@@ -4,13 +4,24 @@ from bs4 import BeautifulSoup
 # URL till sidan
 url = "https://www.piteenergi.se/snotemperatur/"
 
+# Proxy-inställningar (använd en gratis eller betald proxy)
+proxies = {
+    "http": "http://24.49.117.86:80",  # Ersätt med en giltig proxy
+    "https": "http://24.49.117.86:80",  # Ersätt med en giltig proxy
+}
+
 # Lägg till en User-Agent i headers
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
 }
 
-# Hämta sidans innehåll med headers
-response = requests.get(url, headers=headers)
+# Hämta sidans innehåll med headers och proxy
+try:
+    response = requests.get(url, headers=headers, proxies=proxies, timeout=10)
+    response.raise_for_status()  # Kasta ett fel om statuskod inte är 200
+except requests.exceptions.RequestException as e:
+    print(f"Fel vid hämtning av sidan: {e}")
+    exit()
 
 if response.status_code == 200:
     soup = BeautifulSoup(response.text, 'html.parser')
